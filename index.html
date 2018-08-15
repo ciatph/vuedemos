@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vue Demo</title>
+    <script src="js/vue.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <!-- Simple message -->
+    <div id="app">
+        {{ message }}
+    </div>
+
+    <!-- Directives sample: title hover -->
+    <div id="app-2">
+        <span v-bind:title="message">
+        Hover your mouse here.
+        </span>
+    </div>
+
+    <!-- Directives sample: Conditionals -->
+    <div id="app-3">
+        <span v-if="seen">Now you see me!</span>
+    </div>
+
+    <!-- Directives sample: for loop -->
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todolist">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+
+    <!-- Directive sample: event handling -->
+    <div id="app-5">
+        <p>{{ message }}</p>
+        <button v-on:click="reverseMessage">ReverseMessage</button>
+    </div>
+
+
+    <!-- Two-way binding demo -->
+    <div id="app-6">
+        <p>{{ message }}</p>
+        <input v-model="message"/>
+    </div>
+
+</body>
+</html>
