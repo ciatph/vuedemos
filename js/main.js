@@ -21,6 +21,8 @@ var Main = function(){
     this.app9;
     // Demo on using computed properties
     this.app10;
+    // Demo in using computed properties with setters and getters
+    this.app11;
 };
 
 
@@ -98,6 +100,42 @@ Main.prototype.initialize = function(){
             modifiedMessage: function(){
                 return this.message + '!'
             }
+        }
+    });
+
+    this.app11 = new Vue({
+        el: '#app-11',
+        data: {
+            cname: 'default',
+            cclass: 'knight',
+            clevel: '1',
+            cserver: 'bahr',
+            header: this.cname + ' - ' + this.cclass + ' - ' + this.cserver 
+        },
+        computed: {
+            // This method is called everytime the "cname", "cclass" or "cserver" part of data changes
+            /*
+            setHeader: function(){
+                return this.cname + ' - ' + this.cclass + ' - ' + this.cserver;
+            }, 
+            */
+
+           // Returns the current value of "cname", "cclass" and "cserver"
+           // Modifies the value of header by providing all values 
+           // Usage: Main.app11.setHeader = 'tarrent,wizard,bahr';
+           setHeader: {
+               // geter
+               get: function(){
+                    return this.cname + ' - ' + this.cclass + ' - ' + this.cserver;
+               },
+               // setter
+               set: function(newValue){
+                    var stats = newValue.split(',');
+                    this.cname = stats[0];
+                    this.cclass = stats[1];
+                    this.cserver = stats[2];
+               }
+           }
         }
     });
 };
