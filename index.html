@@ -46,5 +46,16 @@
         <input v-model="message"/>
     </div>
 
+    <div id="app-7">
+        <ol>
+            <!-- Create instance of the todo-item component-->
+            <todo-item
+                v-for="item in armorlist"
+                v-bind:todo="item"
+                v-bind:key="item.id">
+            </todo-item>
+        </ol>
+    </div>
+
 </body>
 </html>

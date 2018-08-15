@@ -11,6 +11,7 @@ var Main = function(){
     this.app5;
     // Two-way binding demo
     this.app6;
+    this.app7;
 };
 
 
@@ -72,7 +73,23 @@ Main.prototype.initialize = function(){
 
 
 Main.prototype.createComponents = function(){
-    
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    });
+
+    this.app7 = new Vue({
+        el: '#app-7',
+        data: {
+            armorlist: [
+                { id:0, text:'helm' },
+                { id:1, text:'armor' },
+                { id:2, text:'gloves' },
+                { id:3, text:'pants' },
+                { id:4, text:'boots' }
+            ]
+        }
+    });
 };
 
 
@@ -80,4 +97,7 @@ window.onload = function(){
     console.log('loaded!');
     window.Main = new Main();
     Main.initialize();
+
+    // Components demo
+    Main.createComponents();
 };
