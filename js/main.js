@@ -19,6 +19,8 @@ var Main = function(){
     this.app8;
     // Demo on binding for urls
     this.app9;
+    // Demo on using computed properties
+    this.app10;
 };
 
 
@@ -84,6 +86,18 @@ Main.prototype.initialize = function(){
         el: '#app-9',
         data: {
             url: 'http://localhost'
+        }
+    });
+
+    this.app10 = new Vue({
+        el: '#app-10',
+        data: {
+            message: 'Hello'
+        },
+        computed: {
+            modifiedMessage: function(){
+                return this.message + '!'
+            }
         }
     });
 };
