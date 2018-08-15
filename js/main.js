@@ -11,6 +11,7 @@ var Main = function(){
     this.app5;
     // Two-way binding demo
     this.app6;
+    // Usage of custom components
     this.app7;
 };
 
@@ -72,7 +73,11 @@ Main.prototype.initialize = function(){
 };
 
 
+/**
+ * Demo on using custom Vue components
+ */
 Main.prototype.createComponents = function(){
+    // Create and use the 'todo-item' component
     Vue.component('todo-item', {
         props: ['todo'],
         template: '<li>{{ todo.text }}</li>'
