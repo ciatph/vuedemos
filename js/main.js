@@ -23,6 +23,8 @@ var Main = function(){
     this.app10;
     // Demo in using computed properties with setters and getters
     this.app11;
+    // Demo in using watchers
+    this.app12;
 };
 
 
@@ -138,6 +140,41 @@ Main.prototype.initialize = function(){
            }
         }
     });
+
+    this.app12 = new Vue({
+        el: '#app-12',
+        data: {
+            question: '',
+            answer: 'I cannot give you an answer until you ask a question!'
+        },
+        watch: {
+            // Whenever "question" changes, this method will run
+            question: function(newQuestion, oldQuestion){
+                this.answer = 'Waiting for you to stop typing...';
+                this.debouncedGetAnswer();
+            }
+        },
+        created: function(){
+            this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+        },
+        methods: {
+            getAnswer: function(){
+                if(this.question.indexOf('?') === -1){
+                    this.answer = 'Questions usually contain a question mark :-)';
+                    return;
+                }
+                this.answer = 'Thinking...';
+                var vm = this;
+                axios.get('https://yesno.wtf/api')
+                    .then(function(response){
+                        vm.answer = _.capitalize(response.data.answer);
+                    })
+                    .catch(function(error){
+                        vm.answer = 'Error! Could not reach the API. ' + error;
+                    });
+            }
+        }
+    });
 };
 
 
@@ -174,21 +211,19 @@ Main.prototype.getdata = function(){
         template: '<li><input type="checkbox">{{ farmland.text }}</li>'
     });    
 
-    $.ajax({
-        url: 'https://us-central1-appdatacollect-3b7d7.cloudfunctions.net/getdata?node=farmland_setup&fields=_06loc,_07pdate,_08hvdate,_09soil,_10eco&year=2014',
-        dataType: 'json',
-        success: function(j){
+    axios.get('https://us-central1-appdatacollect-3b7d7.cloudfunctions.net/getdata?node=farmland_setup&fields=_06loc,_07pdate,_08hvdate,_09soil,_10eco&year=2014')
+        .then(function(response){
             console.log('loaded data!');
             var display = [];
             var max = 10;
 
             // Parse data, get gps location
-            for(var user in j["data"]){
-                for(var farmer in j["data"][user]){
-                    for(var plot in j["data"][user][farmer]){
-                        var loc = j["data"][user][farmer][plot]['_06loc'];
+            for(var user in response["data"]["data"]){
+                for(var farmer in response["data"]["data"][user]){
+                    for(var plot in response["data"]["data"][user][farmer]){
+                        var loc = response["data"]["data"][user][farmer][plot]['_06loc'];
                         if(loc !== '' && display.length < max)
-                            display.push({id:display.length, text:j["data"][user][farmer][plot]['_06loc']});
+                            display.push({id:display.length, text:response["data"]["data"][user][farmer][plot]['_06loc']});
                     }
                 }
             }
@@ -204,9 +239,11 @@ Main.prototype.getdata = function(){
                         console.log('i was clicked ')
                     }
                 }
-            });            
-        }     
-    });
+            });  
+        })
+        .catch(function(error){
+            console.log('An error has occured while fetching data ' + error);
+        });
 };
 
 

@@ -2,7 +2,8 @@
 <html>
 <head>
 <title>Vue Demo</title>
-    <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script src="js/lodash.min.js" type="text/javascript"></script>
     <script src="js/vue.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
 </head>
@@ -90,6 +91,14 @@
         <div>Char. class: {{ cclass }}</div>
         <div>Level: {{ clevel }}</div>
         <div>Server: {{ cserver }}</div>
+    </div>
+
+    <!-- Demo in using watchers -->
+    <div id="app-12">
+        <p>Ask a yes/no question:</p>
+        <input v-model="question"/>
+
+        <p>{{ answer }}</p>
     </div>
 </body>
 </html>
