@@ -1,3 +1,5 @@
+var d;
+
 var Main = function(){
     // Simple message binding
     this.app;
@@ -13,6 +15,10 @@ var Main = function(){
     this.app6;
     // Usage of custom components
     this.app7;
+    // Demo on components using dynamic-loaded items for data
+    this.app8;
+    // Demo on binding for urls
+    this.app9;
 };
 
 
@@ -24,6 +30,9 @@ Main.prototype.initialize = function(){
         el: '#app',
         data: {
             message: 'It works!'
+        },
+        created: function(){
+            console.log('#app created');
         }
     });
 
@@ -70,6 +79,13 @@ Main.prototype.initialize = function(){
             message: 'Hello there'
         }
     });
+
+    this.app9 = new Vue({
+        el: '#app-9',
+        data: {
+            url: 'http://localhost'
+        }
+    });
 };
 
 
@@ -80,7 +96,7 @@ Main.prototype.createComponents = function(){
     // Create and use the 'todo-item' component
     Vue.component('todo-item', {
         props: ['todo'],
-        template: '<li>{{ todo.text }}</li>'
+        template: '<li>{{ todo.text }}</li>',
     });
 
     this.app7 = new Vue({
@@ -93,16 +109,62 @@ Main.prototype.createComponents = function(){
                 { id:3, text:'pants' },
                 { id:4, text:'boots' }
             ]
-        }
+        },
+    });
+};
+
+
+Main.prototype.getdata = function(){
+    // Create the item template
+    Vue.component('farmland-item', {
+        props: ['farmland'],
+        //template: '<li>{{ farmland.text }}</li>'
+        template: '<li><input type="checkbox">{{ farmland.text }}</li>'
+    });    
+
+    $.ajax({
+        url: 'https://us-central1-appdatacollect-3b7d7.cloudfunctions.net/getdata?node=farmland_setup&fields=_06loc,_07pdate,_08hvdate,_09soil,_10eco&year=2014',
+        dataType: 'json',
+        success: function(j){
+            console.log('loaded data!');
+            var display = [];
+            var max = 10;
+
+            // Parse data, get gps location
+            for(var user in j["data"]){
+                for(var farmer in j["data"][user]){
+                    for(var plot in j["data"][user][farmer]){
+                        var loc = j["data"][user][farmer][plot]['_06loc'];
+                        if(loc !== '' && display.length < max)
+                            display.push({id:display.length, text:j["data"][user][farmer][plot]['_06loc']});
+                    }
+                }
+            }
+
+            // Render the list to view
+            new Vue({
+                el: '#app-8',
+                data: {
+                    datalist: display
+                },
+                methods: {
+                    alertMe: function(){
+                        console.log('i was clicked ')
+                    }
+                }
+            });            
+        }     
     });
 };
 
 
 window.onload = function(){
-    console.log('loaded!');
     window.Main = new Main();
     Main.initialize();
 
     // Components demo
     Main.createComponents();
+
+    // Components demo with ajax
+    Main.getdata();
 };

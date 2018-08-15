@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Vue Demo</title>
+    <script src="js/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="js/vue.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
 </head>
@@ -58,5 +59,22 @@
         </ol>
     </div>
 
+    <!-- Demo on components using dynamic-loaded items for data -->
+    <div id="app-8">
+        <ol>
+            <farmland-item
+                v-for="item in datalist"
+                v-bind:farmland="item"
+                v-bind:key="item.id"
+                v-on:click.native=alertMe>
+            </farmland-item>
+        </ol>
+    </div>
+
+    <!-- Demo on binding for urls -->
+    <div id="app-9">
+        <p>{{ url }}</p>
+        <a v-bind:href="url">Link here</a>
+    </div>
 </body>
 </html>
