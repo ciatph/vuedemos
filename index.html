@@ -6,6 +6,11 @@
     <script src="js/lodash.min.js" type="text/javascript"></script>
     <script src="js/vue.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
+    <style type="text/css">
+        .active {
+            background-color: palegreen;
+        }
+    </style>
 </head>
 <body>
 
@@ -99,6 +104,17 @@
         <input v-model="question"/>
 
         <p>{{ answer }}</p>
+    </div>
+    
+    <!-- Demo on binding HTML Classes -->
+    <div id="app-13">
+        <p>{{ header }}</p>
+        <input 
+            type="text"
+            v-bind:class="{ active: isActive }"
+            v-bind:value="message"/>
+
+        <span>
     </div>
 </body>
 </html>

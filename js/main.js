@@ -25,6 +25,8 @@ var Main = function(){
     this.app11;
     // Demo in using watchers
     this.app12;
+    // Demo on binding HTML Classes
+    this.app13;
 };
 
 
@@ -173,6 +175,16 @@ Main.prototype.initialize = function(){
                         vm.answer = 'Error! Could not reach the API. ' + error;
                     });
             }
+        }
+    });
+
+    // Removes/restores the "active" class by reading "isActive"
+    this.app13 = new Vue({
+        el: '#app-13',
+        data: {
+            message: 'Data Test',
+            header: 'Class Bind Test',
+            isActive: true
         }
     });
 };
